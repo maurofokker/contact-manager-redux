@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import TextInputGroup from '../layout/TextInputGroup';
+// connect to redux
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux';
+import { getContact } from '../../actions/contactActions';
 
 class EditContact extends Component {
   state = {
@@ -8,6 +12,23 @@ class EditContact extends Component {
     phone: '',
     errors: {}
   };
+
+  componentWillReceiveProps(nextProps, nextStates) {
+    // this run when fetch data (contact) from state and bring it to the props
+    // and it can be accesed inside nextProps object
+    const {name, email, phone} = nextProps.contact;
+    this.setState({
+      name,
+      email,
+      phone
+    });
+  }
+
+  // GET_CONTACT is called inside componentDidMount life cycle
+  componentDidMount() {
+    const { id } = this.props.match.params; // get id from props
+    this.props.getContact(id);  // getContact is a prop
+  }
 
   onSubmit = (e) => {
     e.preventDefault();
@@ -98,4 +119,13 @@ class EditContact extends Component {
   }
 }
 
-export default EditContact;
+EditContact.propType = {
+  contact: PropTypes.object.isRequired,
+  getContact: PropTypes.func.isRequired
+}
+
+const mapStateToPropts = state => ({
+  contact: state.contact.contact  // this can be see in redux tools -> State -> tree
+});
+
+export default connect(mapStateToPropts, { getContact } )(EditContact);
