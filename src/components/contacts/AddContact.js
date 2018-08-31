@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 // connect to redux
 import { connect } from 'react-redux';
 import { addContact } from '../../actions/contactActions';
-// to generate id of contact in component later will be replaced with jsonplaceholder api call
-import uuid from 'uuid';
 
 class AddContact extends Component {
   state = {
@@ -37,7 +35,6 @@ class AddContact extends Component {
     }
 
     const newContact = {
-      id: uuid(),
       name,
       email,
       phone

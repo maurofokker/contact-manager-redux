@@ -17,18 +17,30 @@ export const getContacts = () => async dispatch => {
   
 };
 
-export const deleteContact = id => {
-  return {
-    type: DELETE_CONTACT,
-    payload: id
-  };
+export const deleteContact = id => async dispatch => {
+  // try catch is used bc jsonplaceholder returns status 404 when delete request of new contact
+  // bc that contact doesnt exist in the fake api
+  try {
+    await axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`);
+    dispatch ({
+      type: DELETE_CONTACT,
+      payload: id
+    });
+  } catch (e) {
+    dispatch ({
+      type: DELETE_CONTACT,
+      payload: id
+    });
+  }
+  
 };
 
-export const addContact = contact => {
-  return {
+export const addContact = contact => async dispatch => {
+  const response = await axios.post('https://jsonplaceholder.typicode.com/users', contact);
+  dispatch ({
     type: ADD_CONTACT,
-    payload: contact
-  };
+    payload: response.data
+  });
 };
 
 // take this to the Reducer file -> contactReducer
