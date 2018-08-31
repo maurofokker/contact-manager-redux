@@ -4,7 +4,7 @@ import Contact from './Contact';
 import { connect } from 'react-redux';
 // everithing from redux state (actions) is put into props
 import PropTypes from 'prop-types';
-import { GET_CONTACTS } from '../../actions/types';
+import { getContacts } from '../../actions/contactActions';
 
 class Contacts extends Component {
   componentDidMount() {
@@ -37,15 +37,10 @@ const mapStateToProps = state => ({
 });
 // to access in props -> this.props.contacts
 
-const mapDispatchToProps = dispatch => ({
-  // name of actions
-  getContacts: () => dispatch({ type: GET_CONTACTS })
-});
-
 // in order to use connect it must wrap component
 // first parameter everything we want to map from the redux state to the props in the component
 // second parameter anything we want to dispatch (any action to dispatch)
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { getContacts }
 )(Contacts);
