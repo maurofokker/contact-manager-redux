@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 import TextInputGroup from '../layout/TextInputGroup';
+import PropTypes from 'prop-types';
+// connect to redux
+import { connect } from 'react-redux';
+import { addContact } from '../../actions/contactActions';
+// to generate id of contact in component later will be replaced with jsonplaceholder api call
+import uuid from 'uuid';
 
 class AddContact extends Component {
   state = {
@@ -9,7 +15,7 @@ class AddContact extends Component {
     errors: {}
   };
 
-  onSubmit = (e) => {
+  onSubmit = e => {
     e.preventDefault();
 
     const { name, email, phone } = this.state;
@@ -31,12 +37,14 @@ class AddContact extends Component {
     }
 
     const newContact = {
+      id: uuid(),
       name,
       email,
       phone
     };
 
     //// SUBMIT CONTACT ////
+    this.props.addContact(newContact);
 
     // Clear State
     this.setState({
@@ -96,4 +104,12 @@ class AddContact extends Component {
   }
 }
 
-export default AddContact;
+AddContact.propTypes = {
+  addContact: PropTypes.func.isRequired
+};
+
+// no data needed from state
+export default connect(
+  null,
+  { addContact }
+)(AddContact);
