@@ -53,4 +53,11 @@ export const addContact = contact => async dispatch => {
   });
 };
 
+export const updateContact = contact => async dispatch => {
+  const response = await axios.put(`https://jsonplaceholder.typicode.com/users/${contact.id}`, contact);
+  dispatch ({
+    type: UPDATE_CONTACT,
+    payload: response.data
+  });
+};
 // take this to the Reducer file -> contactReducer
